@@ -602,6 +602,9 @@ WLED_GLOBAL bool forceReconnect _INIT(false);
 WLED_GLOBAL unsigned long lastReconnectAttempt _INIT(0);
 WLED_GLOBAL bool interfacesInited _INIT(false);
 WLED_GLOBAL bool wasConnected _INIT(false);
+WLED_GLOBAL char httpUser[33]   _INIT("");        // HTTP Basic Auth username (max 32 chars)
+WLED_GLOBAL char httpPass[65]   _INIT("");        // HTTP Basic Auth password (max 64 chars)
+WLED_GLOBAL bool httpAuthEnabled _INIT(false);     // Enable HTTP Basic Auth
 
 // color
 WLED_GLOBAL byte lastRandomIndex _INIT(0);        // used to save last random color so the new one is not the same

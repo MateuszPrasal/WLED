@@ -61,6 +61,19 @@ static bool inLocalSubnet(const IPAddress &client) {
       ||  inSameSubnet(client);                                                           // same subnet as WLED device
 }
 
+bool checkBasicAuth(AsyncWebServerRequest *request) {
+  if (!httpAuthEnabled || (strlen(httpUser) == 0 && strlen(httpPass) == 0)) {
+    return true; // Auth disabled or not configured
+  }
+  
+  if (!request->authenticate(httpUser, httpPass)) { 
+    request->requestAuthentication();
+    return false;
+  }
+  
+  return true;
+}
+
 /*
  * Integrated HTTP web server page declarations
  */
@@ -344,6 +357,7 @@ void initServer()
 
   //settings page
   server.on(F("/settings"), HTTP_GET, [](AsyncWebServerRequest *request){
+    if (!checkBasicAuth(request)) return;
     serveSettings(request);
   });
 
@@ -375,17 +389,21 @@ void initServer()
   });
 
   server.on(F("/settings"), HTTP_POST, [](AsyncWebServerRequest *request){
+    if (!checkBasicAuth(request)) return;
     serveSettings(request, true);
   });
 
   const static char _json[] PROGMEM = "/json";
   server.on(FPSTR(_json), HTTP_GET, [](AsyncWebServerRequest *request){
+    if (!checkBasicAuth(request)) return;
     serveJson(request);
   });
 
   AsyncCallbackJsonWebHandler* handler = new AsyncCallbackJsonWebHandler(FPSTR(_json), [](AsyncWebServerRequest *request) {
     bool verboseResponse = false;
     bool isConfig = false;
+
+    if (!checkBasicAuth(request)) return;
 
     if (!requestJSONBufferLock(14)) {
       request->deferResponse();
@@ -586,6 +604,7 @@ void initServer()
   server.on("/", HTTP_GET, [](AsyncWebServerRequest *request) {
     if (captivePortal(request)) return;
     if (!showWelcomePage || request->hasArg(F("sliders"))) {
+      if (!checkBasicAuth(request)) return;
       handleStaticContent(request, F("/index.htm"), 200, FPSTR(CONTENT_TYPE_HTML), PAGE_index, PAGE_index_length);
     } else {
       serveSettings(request);

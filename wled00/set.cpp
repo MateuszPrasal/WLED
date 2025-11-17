@@ -608,6 +608,15 @@ void handleSettingsSet(AsyncWebServerRequest *request, byte subPage)
 
     if (pwdCorrect) //allow changes if correct pwd or no ota active
     {
+      // HTTP Basic Auth settings
+      httpAuthEnabled = request->hasArg(F("AE"));
+      if (request->hasArg(F("AU"))) {
+        strlcpy(httpUser, request->arg(F("AU")).c_str(), 33);
+      }
+      if (request->hasArg(F("AP"))) {
+        strlcpy(httpPass, request->arg(F("AP")).c_str(), 65);
+      }
+      
       otaLock = request->hasArg(F("NO"));
       wifiLock = request->hasArg(F("OW"));
       #ifndef WLED_DISABLE_OTA

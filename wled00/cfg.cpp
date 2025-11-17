@@ -1305,6 +1305,11 @@ bool deserializeConfigSec() {
   getStringFromJson(settingsPIN, root["pin"], 5);
   correctPIN = !strlen(settingsPIN);
 
+  JsonObject httpAuth = root["httpAuth"];
+  CJSON(httpAuthEnabled, httpAuth["enabled"]);
+  getStringFromJson(httpUser, httpAuth["user"], 33);
+  getStringFromJson(httpPass, httpAuth["pass"], 65);
+
   JsonObject ota = root["ota"];
   getStringFromJson(otaPass, ota[F("pwd")], 33);
   CJSON(otaLock, ota[F("lock")]);
@@ -1346,6 +1351,11 @@ void serializeConfigSec() {
 #endif
 
   root["pin"] = settingsPIN;
+
+  JsonObject httpAuth = root.createNestedObject("httpAuth");
+  httpAuth["enabled"] = httpAuthEnabled;
+  httpAuth["user"] = httpUser;
+  httpAuth["pass"] = httpPass;
 
   JsonObject ota = root.createNestedObject("ota");
   ota[F("pwd")] = otaPass;

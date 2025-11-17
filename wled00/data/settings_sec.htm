@@ -43,6 +43,12 @@
 		<h2>Security & Update setup</h2>
 		Settings PIN: <input type="password" id="PIN" name="PIN" size="4" maxlength="4" minlength="4" onkeydown="checkNum(this)" pattern="[0-9]*" inputmode="numeric" title="Please enter a 4 digit number"><br>
 		<div class="warn">&#9888; Unencrypted transmission. Be prudent when selecting PIN, do NOT use your banking, door, SIM, etc. pin!</div><br>
+		<hr>
+		<h3>HTTP Basic Authentication</h3>
+		Enable HTTP Authentication: <input type="checkbox" name="AE" id="AE"><br>
+		Username: <input type="text" name="AU" maxlength="32"><br>
+		Password: <input type="password" name="AP" maxlength="64"><br>
+		<div class="warn">&#9888; This provides additional security layer. Browser will prompt for credentials.</div><br>
 		Lock wireless (OTA) software update: <input type="checkbox" name="NO"><br>
 		Passphrase: <input type="password" name="OP" maxlength="32"><br>
 		To enable OTA, for security reasons you need to also enter the correct password!<br>
