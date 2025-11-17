@@ -59,6 +59,15 @@ bool deserializeConfig(JsonObject doc, bool fromFS) {
   JsonObject id = doc["id"];
   getStringFromJson(cmDNS, id[F("mdns")], 33);
   getStringFromJson(serverDescription, id[F("name")], 33);
+
+  // HTTP Auth Basic
+  JsonObject httpAuth = doc["httpAuth"];
+  if (!httpAuth.isNull()) {
+    CJSON(httpAuthEnabled, httpAuth["enabled"]);
+    getStringFromJson(httpUser, httpAuth["user"], 33);
+    getStringFromJson(httpPass, httpAuth["pass"], 65);
+  }
+
 #ifndef WLED_DISABLE_ALEXA
   getStringFromJson(alexaInvocationName, id[F("inv")], 33);
 #endif
@@ -1275,6 +1284,14 @@ bool deserializeConfigSec() {
   }
 
   JsonObject root = pDoc->as<JsonObject>();
+
+  // HTTP Auth Basic
+  JsonObject httpAuth = root["httpAuth"];
+  if (!httpAuth.isNull()) {
+    CJSON(httpAuthEnabled, httpAuth["enabled"]);
+    getStringFromJson(httpUser, httpAuth["user"], 33);
+    getStringFromJson(httpPass, httpAuth["pass"], 65);
+  }
 
   size_t n = 0;
   JsonArray nw_ins = root["nw"]["ins"];
