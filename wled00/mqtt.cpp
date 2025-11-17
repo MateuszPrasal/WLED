@@ -229,6 +229,11 @@ bool initMqtt()
       mqtt->setServer(mqttServer, mqttPort);
   }
   mqtt->setClientId(mqttClientID);
+
+  #ifdef ASYNC_TCP_SSL_ENABLED
+    mqtt->setSecure(true);
+  #endif
+
   if (mqttUser[0] && mqttPass[0]) mqtt->setCredentials(mqttUser, mqttPass);
 
   #ifndef USERMOD_SMARTNEST
