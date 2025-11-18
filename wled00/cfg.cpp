@@ -1322,7 +1322,6 @@ bool deserializeConfigSec() {
   getStringFromJson(settingsPIN, root["pin"], 5);
   correctPIN = !strlen(settingsPIN);
 
-  JsonObject httpAuth = root["httpAuth"];
   CJSON(httpAuthEnabled, httpAuth["enabled"]);
   getStringFromJson(httpUser, httpAuth["user"], 33);
   getStringFromJson(httpPass, httpAuth["pass"], 65);
